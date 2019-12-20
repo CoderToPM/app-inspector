@@ -36,5 +36,8 @@ module.exports = {
         exclude: /node_modules/
       }
     ]
+  },
+  optimization: {
+    minimize: false
   }
 };
