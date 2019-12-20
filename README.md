@@ -32,7 +32,7 @@
 This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Mon Dec 09 2019 11:44:13 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
-![](https://github.com/CoderToPM/app-inspector/blob/master/snapshot.png)
+![](https://raw.githubusercontent.com/CoderToPM/app-inspector/master/snapshot.png)
 ![](https://macacajs.github.io/app-inspector/assets/7dfcf2f7gw1f77ev6csw5g20s50iwe81.gif)
 
 ## Installation
