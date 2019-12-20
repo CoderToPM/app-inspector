@@ -12,6 +12,10 @@ export function compareBoundsSize(rectA, rectB) {
   return boundsSize(rectA) > boundsSize(rectB);
 };
 
+export function compareText(bestText, thisText) {
+  return bestText.length > thisText.length;
+};
+
 export function isInRect(x, y, bounds) {
   const [
     _x,
@@ -48,6 +52,56 @@ export function getNodePathByXY(tree, isIOS, x, y) {
     }
   }
 
+  walk(tree, []);
+
+  return bestPath;
+};
+
+export function getNodePathByText(tree, isIOS, text) {
+  let bestText = null;
+  let bestPath = null;
+  function walk(node, path) {
+    let thisText = node.text;
+    let contains = thisText && thisText.indexOf(text) !== -1;
+
+    if (contains) {
+      if (!bestText || compareText(bestText, thisText)) {
+        bestText = thisText;
+        bestPath = path;
+      }
+    }
+    if (node.nodes) {
+      node.nodes.forEach((child, index) => {
+        walk(child, path.concat([index]));
+      });
+    }
+  }
+
+  walk(tree, []);
+
+  return bestPath;
+};
+
+export function getNodePathByResourceId(tree, isIOS, resourceId) {
+  let bestId = null;
+  let bestPath = null;
+
+  function walk(node, path) {
+    let thisId = node["resource-id"];
+    let contains = thisId && thisId.indexOf(resourceId) !== -1;
+
+    if (contains) {
+      if (!bestId || compareText(bestId, thisId)) {
+        bestId = thisId;
+        bestPath = path;
+      }
+    }
+    if (node.nodes) {
+      node.nodes.forEach((child, index) => {
+        walk(child, path.concat([index]));
+      });
+    }
+  }
   walk(tree, []);
 
   return bestPath;

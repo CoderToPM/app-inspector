@@ -149,6 +149,9 @@ export default class Tree extends PureComponent {
     this.state = {
       data: this.expandShallow(props.initialData, 5),
       isTreeView: true,
+      searchInputValue: "",
+      searchInputIdValue: "",
+      loading: false
     };
     window.tree = this;
   }
@@ -256,29 +259,68 @@ export default class Tree extends PureComponent {
     })
   }
 
+  onSearchInputChange(e) {
+    console.log("search value:",e.target.value);
+    //设置数据的值，用this.setState({})()
+    this.props.searchTreeNode(e.target.value);
+    this.setState({
+      searchInputValue: e.target.value,
+      searchInputIdValue: ""
+    })
+  }
+
+  onSearchInputIdChange(e) {
+    console.log("search id:",e.target.value);
+    this.props.searchTreeNodeById(e.target.value);
+    this.setState({
+      searchInputValue: "",
+      searchInputIdValue: e.target.value
+    })
+  }
+
+  reloadTreeData(){
+    this.setState({
+      loading: true
+    });
+    setTimeout(function () {
+      location.reload()
+    },1000);
+  }
+
   render() {
     return (
-      <div className="list-view" style={{
+      <div>
+        <p className="view-source" style={{
+          width: this.props.width ? this.props.width + 'px' : 'auto'
+        }}>
+          <div className="reload-btn" onClick={ this.reloadTreeData.bind(this) }>重新加载
+            <div className={ this.state.loading ? "loader-icon" : "hide"}></div>
+          </div>
+          <button onClick={ this.onViewButtonClick.bind(this) }>{ this.state.isTreeView ? 'View Source' : 'View Tree' }</button>
+          <input className="search-input" placeholder="检索text" value={this.state.searchInputValue} onChange={this.onSearchInputChange.bind(this)} />
+          <input className="search-input" placeholder="检索resource-id" value={this.state.searchInputIdValue} onChange={this.onSearchInputIdChange.bind(this)} />
+        </p>
+        <div className="list-view" style={{
         width: this.props.width ? this.props.width + 'px' : 'auto'
       }}>
-        <p className="view-source" onClick={ this.onViewButtonClick.bind(this) }>{ this.state.isTreeView ? 'View Source' : 'View Tree' }</p>
         {
           this.state.isTreeView ?
-          <TreeNode
-            onMouseEnter={ this.props.onNodeMouseEnter }
-            onMouseLeave={ this.props.onNodeMouseLeave }
-            onUpdate={ this.handleNodeUpdate.bind(this) }
-            path={ [] }
-            data={ this.state.data }
-          /> :
-          <SyntaxHighlighter
-            language='json'
-            style={docco}
-            showLineNumbers={true}
-          >
-            { JSON.stringify(this.state.data, null, 2) }
-          </SyntaxHighlighter>
+            <TreeNode
+              onMouseEnter={ this.props.onNodeMouseEnter }
+              onMouseLeave={ this.props.onNodeMouseLeave }
+              onUpdate={ this.handleNodeUpdate.bind(this) }
+              path={ [] }
+              data={ this.state.data }
+            /> :
+            <SyntaxHighlighter
+              language='json'
+              style={docco}
+              showLineNumbers={true}
+            >
+              { JSON.stringify(this.state.data, null, 2) }
+            </SyntaxHighlighter>
         }
+      </div>
       </div>
     );
   }

@@ -12,7 +12,7 @@ import {
   getXPath,
   getXPathLite
 } from '../libs/xpath';
-import { getNodePathByXY } from '../libs/bounds';
+import {getNodePathByXY, getNodePathByText, getNodePathByResourceId} from '../libs/bounds';
 
 const { appData } = window;
 
@@ -89,6 +89,28 @@ class App extends Component {
     this.updateTreeScrollerStyle();
   }
 
+  searchTreeNode(text){
+    if(!text) {
+      console.log("输入的内容为空，不执行查询");
+    }
+    const nodePath = getNodePathByText(this.state.tree, this.state.isIOS, text);
+    if (!nodePath) return;
+    this.refs.tree.focus(nodePath);
+    this.resizeTreeViewport();
+    this.updateTreeScrollerStyle();
+  }
+
+  searchTreeNodeById(id){
+    if(!id) {
+      console.log("输入的内容为空，不执行查询");
+    }
+    const nodePath = getNodePathByResourceId(this.state.tree, this.state.isIOS, id);
+    if (!nodePath) return;
+    this.refs.tree.focus(nodePath);
+    this.resizeTreeViewport();
+    this.updateTreeScrollerStyle();
+  }
+
   resizeTreeViewport() {
     setTimeout(() => {
       this.refs.treeScroller && this.setState({
@@ -114,12 +136,12 @@ class App extends Component {
     return (
       <div className="container">
         <div className="header">
-          <a href="//macacajs.github.io/app-inspector" target="_blank">
-            <img className="page-logo" src="//npmcdn.com/macaca-logo@latest/svg/monkey.svg" />
-            <h1>Macaca App Inspector</h1>
+          <a href="//github.com/CoderToPM/app-inspector" target="_blank">
+            <img className="page-logo" src="//heyongchao.com/favicon.png" />
+            <h1>筑梦者 App Inspector</h1>
             <GitHubButton
               type="stargazers"
-              namespace="macacajs"
+              namespace="CoderToPM"
               repo="app-inspector"
             />
           </a>
@@ -143,6 +165,8 @@ class App extends Component {
                   onNodeMouseEnter={ this.handleMouseEnter.bind(this) }
                   onNodeMouseLeave={ this.handleMouseLeave.bind(this) }
                   initialData={ this.state.tree }
+                  searchTreeNode={ this.searchTreeNode.bind(this) }
+                  searchTreeNodeById={ this.searchTreeNodeById.bind(this) }
                 />
               </div>
               {
