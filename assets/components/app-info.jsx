@@ -5,10 +5,10 @@ export default () => (
   <div className="app-info">
     <span>v{ pkg.version }</span>
     <span>
-      &copy; 2015-{ (new Date).getFullYear() } <a href="//macacajs.github.io/app-inspector" target="_blank">Macaca</a>
+      &copy; 2019-{ (new Date).getFullYear() } <a href="//github.com/CoderToPM/app-inspector" target="_blank">CoderToPM</a>
     </span>
     <strong>
-      <a className="fn-right" target="_blank" style={{color: '#f60'}} href="//github.com/macacajs/app-inspector/issues/new">
+      <a className="fn-right" target="_blank" style={{color: '#f60'}} href="//github.com/CoderToPM/app-inspector/issues/new">
         Need help?
       </a>
     </strong>
